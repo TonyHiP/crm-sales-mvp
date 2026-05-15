@@ -51,7 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if(logoutBtn) {
         logoutBtn.addEventListener('click', () => {
             if(confirm('¿Estás seguro de que deseas cerrar sesión?')) {
-                alert('Saliendo...');
+                localStorage.removeItem('crm_user_logged');
+                window.location.href = 'login.html';
             }
         });
     }
