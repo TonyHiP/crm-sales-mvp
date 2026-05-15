@@ -6,7 +6,7 @@
     <title>Login - CRM Sales MVP</title>
 
     <script>
-        // 🛡️ Si ya hay sesión activa, mandarlo directo al Dashboard (no tiene sentido mostrarle el login de nuevo)
+
         if (localStorage.getItem('crm_user_logged')) {
             window.location.replace('index.html');
         }
@@ -29,7 +29,7 @@
 <body class="antialiased bg-gray-100 flex items-center justify-center min-h-screen p-4">
     
     <div class="bg-white rounded-3xl shadow-xl border border-slate-100 w-full max-w-md p-8 md:p-10 transform transition-all">
-        <!-- Logo y Encabezado -->
+        
         <div class="flex flex-col items-center justify-center mb-8">
             <div class="bg-indigo-50 p-3 rounded-full mb-4">
                 <svg class="w-10 h-10 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -40,9 +40,9 @@
             <p class="text-sm text-slate-500 mt-2 text-center">Ingresa tus credenciales para acceder al panel de control</p>
         </div>
 
-        <!-- Formulario -->
+        
         <form id="loginForm" class="space-y-6">
-            <!-- Correo Electrónico -->
+            
             <div>
                 <label for="email" class="block text-sm font-medium text-slate-700 mb-1">Correo Electrónico</label>
                 <div class="relative">
@@ -53,7 +53,7 @@
                 </div>
             </div>
 
-            <!-- Contraseña -->
+            
             <div>
                 <div class="flex justify-between items-center mb-1">
                     <label for="password" class="block text-sm font-medium text-slate-700">Contraseña</label>
@@ -67,7 +67,7 @@
                 </div>
             </div>
 
-            <!-- Botón Ingresar -->
+            
             <button type="submit" class="w-full bg-brand hover:bg-indigo-600 text-white font-bold py-3 px-4 rounded-xl shadow-md shadow-indigo-200 transition-all active:scale-[0.98] flex justify-center items-center group">
                 <span>Ingresar</span>
                 <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
@@ -75,22 +75,21 @@
         </form>
     </div>
 
-    <!-- Script de Simulación de Login -->
+    
     <script>
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
             const btn = this.querySelector('button[type="submit"]');
-            
-            // Efecto visual de carga
+
             btn.innerHTML = `<svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>`;
             btn.disabled = true;
             btn.classList.add('opacity-80', 'cursor-not-allowed');
 
             setTimeout(() => {
-                // Creamos la sesión para poder acceder al index
+
                 localStorage.setItem('crm_user_logged', 'true');
-                // Usamos replace en vez de href para que no quede el login en el historial (botón Atrás)
+
                 window.location.replace('index.html');
             }, 800);
         });

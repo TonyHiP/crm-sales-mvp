@@ -48,10 +48,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    if(logoutBtn) {
+  if(logoutBtn) {
         logoutBtn.addEventListener('click', () => {
             if(confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+                // 🌟 Limpiamos la sesión simulada del navegador
                 localStorage.removeItem('crm_user_logged');
+                
+                // 🚀 Redirigimos al Login de vuelta inmediatamente
                 window.location.href = 'login.html';
             }
         });
