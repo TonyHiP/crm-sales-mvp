@@ -1,22 +1,17 @@
-# --- Frontend (Angular) ---
 **/node_modules/
 **/.angular/
 **/dist/
 .editorconfig
 .browserslistrc
 
-# --- Backend (PHP) ---
 **/vendor/
 .env
+v1/reset.php
 *.log
 
-# --- Base de Datos ---
-# No ignoramos los .sql de estructura, pero sí respaldos pesados si 
-# los hubiera
 *.bak
 *.sql.gz
 
-# --- IDE y Sistema ---
 .vscode/
 .idea/
 .DS_Store
