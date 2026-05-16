@@ -27,6 +27,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 breadcrumbCurrent.innerText = sectionName;
             }
 
+            if(sectionName) {
+                // Ocultar todas las vistas activas
+                document.querySelectorAll('.view-section').forEach(view => {
+                    view.classList.add('hidden');
+                });
+
+                // Formatear el ID objetivo
+                let targetId = 'view-' + sectionName.toLowerCase();
+                if (sectionName === 'Configuración') targetId = 'view-config';
+
+                // Mostrar solo la vista seleccionada
+                const targetView = document.getElementById(targetId);
+                if (targetView) {
+                    targetView.classList.remove('hidden');
+                }
+            }
+
 
             if(window.innerWidth < 768 && !sidebar.classList.contains('-translate-x-full')) {
                 toggleSidebar();
@@ -48,15 +65,55 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-  if(logoutBtn) {
-        logoutBtn.addEventListener('click', () => {
-            if(confirm('¿Estás seguro de que deseas cerrar sesión?')) {
-                // 🌟 Limpiamos la sesión simulada del navegador
-                localStorage.removeItem('crm_user_logged');
-                
-                // 🚀 Redirigimos al Login de vuelta inmediatamente
-                window.location.href = 'login.html';
-            }
+    // Modal Confirmar Logout
+    const modalLogout = document.getElementById('modal-logout');
+    const btnCancelLogout = document.getElementById('btn-cancel-logout');
+    const btnConfirmLogout = document.getElementById('btn-confirm-logout');
+
+    function toggleLogoutModal() {
+        if (modalLogout) {
+            modalLogout.classList.toggle('hidden');
+        }
+    }
+
+    if(logoutBtn) {
+        logoutBtn.addEventListener('click', toggleLogoutModal);
+    }
+    if(btnCancelLogout) {
+        btnCancelLogout.addEventListener('click', toggleLogoutModal);
+    }
+    if(btnConfirmLogout) {
+        btnConfirmLogout.addEventListener('click', () => {
+            // Limpiamos la sesión simulada del navegador
+            localStorage.removeItem('crm_user_logged');
+            // Redirigimos al Login
+            window.location.replace('login.html');
+        });
+    }
+    if(modalLogout) {
+        modalLogout.addEventListener('click', (e) => {
+            if (e.target === modalLogout) toggleLogoutModal();
+        });
+    }
+    // Modal Nuevo Lead
+    const modalNewLead = document.getElementById('modal-new-lead');
+    const btnNewLead = document.getElementById('btn-new-lead'); // Debe existir en HTML
+    const btnCancelLead = document.getElementById('btn-cancel-lead');
+    const btnCloseIcon = document.getElementById('btn-close-modal-icon');
+
+    function toggleLeadModal() {
+        if (modalNewLead) {
+            modalNewLead.classList.toggle('hidden');
+        }
+    }
+
+    if (btnNewLead) btnNewLead.addEventListener('click', toggleLeadModal);
+    if (btnCancelLead) btnCancelLead.addEventListener('click', toggleLeadModal);
+    if (btnCloseIcon) btnCloseIcon.addEventListener('click', toggleLeadModal);
+
+    if (modalNewLead) {
+        modalNewLead.addEventListener('click', (e) => {
+            if (e.target === modalNewLead) toggleLeadModal();
         });
     }
 });
