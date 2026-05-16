@@ -1,397 +1,1 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>CRM Sales MVP</title>
-    
-    <script>
-        if (!localStorage.getItem('crm_user_logged')) {
-            window.location.replace('login.html');
-        }
-    </script>
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: '#6366f1',
-                        sidebar: '#0f172a',
-                    }
-                }
-            }
-        }
-    </script>
-</head>
-<body class="antialiased">
-    
-    <div class="flex flex-row h-screen w-full overflow-hidden bg-gray-100">
-        
-        <div id="sidebar-overlay" class="fixed inset-0 bg-slate-900/50 z-40 hidden md:hidden transition-opacity"></div>
-
-        
-        <aside id="sidebar" class="w-64 bg-sidebar text-white flex-shrink-0 flex flex-col justify-between absolute inset-y-0 left-0 z-50 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 ease-in-out">
-            <div>
-                
-                <div class="h-16 flex items-center px-6 border-b border-slate-800">
-                    <svg class="w-8 h-8 text-brand mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                    </svg>
-                    <span class="text-xl font-bold tracking-wider">CRM Sales</span>
-                </div>
-
-                
-                <nav class="mt-6 px-4 space-y-2">
-                    <a href="#" data-section="Dashboard" class="nav-link flex items-center px-4 py-3 text-white bg-slate-800 rounded-lg transition-colors group">
-                        <svg class="w-5 h-5 mr-3 text-gray-400 group-hover:text-brand transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-                        Dashboard
-                    </a>
-                    <a href="#" data-section="Leads" class="nav-link flex items-center px-4 py-3 text-gray-300 hover:text-white hover:bg-slate-800 rounded-lg transition-colors group">
-                        <svg class="w-5 h-5 mr-3 text-gray-400 group-hover:text-brand transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                        Leads
-                    </a>
-                    <a href="#" data-section="Ventas" class="nav-link flex items-center px-4 py-3 text-gray-300 hover:text-white hover:bg-slate-800 rounded-lg transition-colors group">
-                        <svg class="w-5 h-5 mr-3 text-gray-400 group-hover:text-brand transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        Ventas
-                    </a>
-                    <a href="#" data-section="Configuración" class="nav-link flex items-center px-4 py-3 text-gray-300 hover:text-white hover:bg-slate-800 rounded-lg transition-colors group">
-                        <svg class="w-5 h-5 mr-3 text-gray-400 group-hover:text-brand transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                        Configuración
-                    </a>
-                </nav>
-            </div>
-
-            
-            <div class="p-4 border-t border-slate-800">
-                <a href="#" class="flex items-center w-full px-4 py-3 hover:bg-slate-800 rounded-lg transition-colors group">
-                    <div class="w-9 h-9 rounded-full bg-brand flex items-center justify-center text-white font-bold mr-3 shadow-md">
-                        A
-                    </div>
-                    <div class="flex-1 text-left">
-                        <p class="text-sm font-medium text-white">Admin</p>
-                        <p class="text-xs text-gray-400">admin@crm.com</p>
-                    </div>
-                    <svg class="w-5 h-5 text-gray-400 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path></svg>
-                </a>
-            </div>
-        </aside>
-
-        
-        <main class="flex-1 flex flex-col h-screen overflow-hidden">
-            
-            
-            <header class="bg-white border-b border-gray-200 h-16 flex items-center justify-between px-8 flex-shrink-0">
-                
-                <div class="flex items-center">
-                    <button id="mobile-menu-btn" class="md:hidden mr-4 text-slate-500 hover:text-slate-800 transition-colors">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                    </button>
-                    <div class="text-gray-500 font-medium text-sm hidden sm:block">
-                        CRM Sales <span class="mx-2 text-gray-300">/</span> <span id="breadcrumb-current" class="text-gray-800 font-semibold">Dashboard</span>
-                    </div>
-                </div>
-                
-                
-                <button id="logout-btn" class="flex items-center text-red-600 border border-red-200 hover:bg-red-50 rounded-xl px-4 py-2 transition duration-200 text-sm font-medium">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
-                    </svg>
-                    Logout
-                </button>
-            </header>
-
-            
-            <div class="flex-1 overflow-y-auto p-8 bg-slate-50">
-                <div id="view-dashboard" class="view-section">
-                
-                
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    
-                    
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex items-center">
-                        <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center mr-4 flex-shrink-0">
-                            <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                        </div>
-                        <div>
-                            <p class="text-sm font-medium text-slate-500">Total Leads</p>
-                            <div class="flex items-center mt-1">
-                                <h3 class="text-2xl font-bold text-slate-800">128</h3>
-                                <span class="ml-2 text-xs font-medium text-green-600 bg-green-50 px-2 py-0.5 rounded-full flex items-center">
-                                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
-                                    12%
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex items-center">
-                        <div class="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center mr-4 flex-shrink-0">
-                            <svg class="w-6 h-6 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        </div>
-                        <div>
-                            <p class="text-sm font-medium text-slate-500">Ventas Cerradas</p>
-                            <div class="flex items-center mt-1">
-                                <h3 class="text-2xl font-bold text-slate-800">34</h3>
-                                <span class="ml-2 text-xs font-medium text-green-600 bg-green-50 px-2 py-0.5 rounded-full flex items-center">
-                                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
-                                    8%
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex items-center">
-                        <div class="w-12 h-12 rounded-full bg-indigo-50 flex items-center justify-center mr-4 flex-shrink-0">
-                            <svg class="w-6 h-6 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        </div>
-                        <div>
-                            <p class="text-sm font-medium text-slate-500">Ingresos</p>
-                            <div class="flex items-center mt-1">
-                                <h3 class="text-2xl font-bold text-slate-800">$48k</h3>
-                                <span class="ml-2 text-xs font-medium text-green-600 bg-green-50 px-2 py-0.5 rounded-full flex items-center">
-                                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
-                                    5%
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex items-center">
-                        <div class="w-12 h-12 rounded-full bg-rose-50 flex items-center justify-center mr-4 flex-shrink-0">
-                            <svg class="w-6 h-6 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
-                        </div>
-                        <div>
-                            <p class="text-sm font-medium text-slate-500">Tasa de Cierre</p>
-                            <div class="flex items-center mt-1">
-                                <h3 class="text-2xl font-bold text-slate-800">26%</h3>
-                                <span class="ml-2 text-xs font-medium text-red-600 bg-red-50 px-2 py-0.5 rounded-full flex items-center">
-                                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
-                                    2%
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-                    
-                </div>
-
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    
-                    
-                <div class="bg-slate-200/50 rounded-2xl p-4 flex flex-col h-full">
-                    <div class="flex items-center justify-between mb-4 px-2">
-                        <div class="flex items-center space-x-2">
-                            <h3 class="font-semibold text-slate-700">Prospección</h3>
-                            <span class="bg-slate-300 text-slate-700 text-xs font-bold px-2 py-1 rounded-full">3</span>
-                        </div>
-                        <button id="btn-new-lead" class="text-brand hover:bg-slate-300/60 p-1.5 rounded-xl transition-colors flex items-center justify-center" title="Registrar nuevo lead">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="space-y-3 flex-1">
-                            
-                            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 hover:shadow-md cursor-pointer transition-shadow group">
-                                <div class="flex justify-between items-start mb-2">
-                                    <h4 class="font-bold text-slate-800 group-hover:text-brand transition-colors">TechCorp Inc.</h4>
-                                    <span class="bg-red-100 text-red-600 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide">Alta</span>
-                                </div>
-                                <p class="text-xl font-bold text-slate-900 mb-2">$15,000</p>
-                                <div class="flex items-center text-xs text-slate-500">
-                                    <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                    Último contacto: Hace 2 días
-                                </div>
-                            </div>
-                            
-                            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 hover:shadow-md cursor-pointer transition-shadow group">
-                                <div class="flex justify-between items-start mb-2">
-                                    <h4 class="font-bold text-slate-800 group-hover:text-brand transition-colors">Global Logistics</h4>
-                                    <span class="bg-yellow-100 text-yellow-700 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide">Media</span>
-                                </div>
-                                <p class="text-xl font-bold text-slate-900 mb-2">$8,500</p>
-                                <div class="flex items-center text-xs text-slate-500">
-                                    <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                    Último contacto: Hoy
-                                </div>
-                            </div>
-                            
-                            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 hover:shadow-md cursor-pointer transition-shadow group">
-                                <div class="flex justify-between items-start mb-2">
-                                    <h4 class="font-bold text-slate-800 group-hover:text-brand transition-colors">EcoSolutions</h4>
-                                    <span class="bg-blue-100 text-blue-600 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide">Baja</span>
-                                </div>
-                                <p class="text-xl font-bold text-slate-900 mb-2">$3,200</p>
-                                <div class="flex items-center text-xs text-slate-500">
-                                    <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                    Último contacto: Hace 1 semana
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    
-                    <div class="bg-slate-200/50 rounded-2xl p-4 flex flex-col h-full">
-                        <div class="flex items-center justify-between mb-4 px-2">
-                            <h3 class="font-semibold text-slate-700">Negociación</h3>
-                            <span class="bg-slate-300 text-slate-700 text-xs font-bold px-2 py-1 rounded-full">2</span>
-                        </div>
-                        <div class="space-y-3 flex-1">
-                            
-                            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 hover:shadow-md cursor-pointer transition-shadow group">
-                                <div class="flex justify-between items-start mb-2">
-                                    <h4 class="font-bold text-slate-800 group-hover:text-brand transition-colors">Alpha Networks</h4>
-                                    <span class="bg-red-100 text-red-600 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide">Alta</span>
-                                </div>
-                                <p class="text-xl font-bold text-slate-900 mb-2">$24,000</p>
-                                <div class="flex items-center text-xs text-slate-500">
-                                    <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                    Último contacto: Ayer
-                                </div>
-                            </div>
-                            
-                            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 hover:shadow-md cursor-pointer transition-shadow group">
-                                <div class="flex justify-between items-start mb-2">
-                                    <h4 class="font-bold text-slate-800 group-hover:text-brand transition-colors">Financiera SUR</h4>
-                                    <span class="bg-yellow-100 text-yellow-700 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide">Media</span>
-                                </div>
-                                <p class="text-xl font-bold text-slate-900 mb-2">$12,500</p>
-                                <div class="flex items-center text-xs text-slate-500">
-                                    <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                    Último contacto: Hace 3 días
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    
-                    <div class="bg-slate-200/50 rounded-2xl p-4 flex flex-col h-full">
-                        <div class="flex items-center justify-between mb-4 px-2">
-                            <h3 class="font-semibold text-slate-700">Cerrado/Ganado</h3>
-                            <span class="bg-slate-300 text-slate-700 text-xs font-bold px-2 py-1 rounded-full">2</span>
-                        </div>
-                        <div class="space-y-3 flex-1">
-                            
-                            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 hover:shadow-md cursor-pointer transition-shadow opacity-80 group">
-                                <div class="flex justify-between items-start mb-2">
-                                    <h4 class="font-bold text-slate-800 group-hover:text-brand transition-colors">MedicCorp</h4>
-                                    <span class="bg-green-100 text-green-700 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide">Ganado</span>
-                                </div>
-                                <p class="text-xl font-bold text-slate-900 mb-2">$45,000</p>
-                                <div class="flex items-center text-xs text-slate-500">
-                                    <svg class="w-3.5 h-3.5 mr-1 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                    Cerrado el: 12/05/2026
-                                </div>
-                            </div>
-                            
-                            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 hover:shadow-md cursor-pointer transition-shadow opacity-80 group">
-                                <div class="flex justify-between items-start mb-2">
-                                    <h4 class="font-bold text-slate-800 group-hover:text-brand transition-colors">EduSystems</h4>
-                                    <span class="bg-green-100 text-green-700 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide">Ganado</span>
-                                </div>
-                                <p class="text-xl font-bold text-slate-900 mb-2">$9,800</p>
-                                <div class="flex items-center text-xs text-slate-500">
-                                    <svg class="w-3.5 h-3.5 mr-1 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                    Cerrado el: 10/05/2026
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                </div> <!-- Cierre de view-dashboard -->
-
-                <!-- Vista Leads -->
-                <div id="view-leads" class="view-section hidden">
-                    <h2 class="text-2xl font-bold text-slate-800 mb-6">Gestión de Leads</h2>
-                </div>
-
-                <!-- Vista Ventas -->
-                <div id="view-ventas" class="view-section hidden">
-                    <h2 class="text-2xl font-bold text-slate-800 mb-6">Pipeline de Ventas</h2>
-                </div>
-
-                <!-- Vista Configuración -->
-                <div id="view-config" class="view-section hidden">
-                    <h2 class="text-2xl font-bold text-slate-800 mb-6">Configuración del Sistema</h2>
-                </div>
-            </div>
-        </main>
-        
-    </div>
-
-    <!-- Modal: Nuevo Lead -->
-    <div id="modal-new-lead" class="fixed inset-0 bg-slate-900/60 z-[100] hidden flex items-center justify-center p-4 backdrop-blur-sm transition-opacity">
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden transform scale-100 transition-transform">
-            
-            <!-- Header -->
-            <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-                <h3 class="text-lg font-bold text-slate-800">Registrar Nuevo Lead</h3>
-                <button id="btn-close-modal-icon" class="text-slate-400 hover:text-slate-600 transition-colors">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
-            </div>
-
-            <!-- Formulario -->
-            <form id="form-new-lead" class="p-6 space-y-4">
-                <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-1">Nombre de la Empresa</label>
-                    <input type="text" required placeholder="Ej: TechCorp Inc." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent text-slate-900 bg-slate-50 focus:bg-white transition-shadow">
-                </div>
-
-                <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-1">Monto Estimado ($)</label>
-                    <input type="number" required placeholder="Ej: 15000" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent text-slate-900 bg-slate-50 focus:bg-white transition-shadow">
-                </div>
-
-                <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-1">Prioridad</label>
-                    <select class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent text-slate-900 bg-slate-50 focus:bg-white transition-shadow appearance-none">
-                        <option value="alta">Alta (Urgente)</option>
-                        <option value="media" selected>Media</option>
-                        <option value="baja">Baja</option>
-                    </select>
-                </div>
-
-                <!-- Botones de acción -->
-                <div class="pt-4 flex justify-end space-x-3">
-                    <button type="button" id="btn-cancel-lead" class="px-5 py-2.5 rounded-xl font-medium text-slate-600 hover:bg-slate-100 transition-colors">
-                        Cancelar
-                    </button>
-                    <button type="submit" class="px-5 py-2.5 rounded-xl font-bold text-white bg-brand hover:bg-indigo-600 shadow-md shadow-indigo-200 transition-colors">
-                        Guardar Lead
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-    <!-- Modal: Confirmar Logout -->
-    <div id="modal-logout" class="fixed inset-0 bg-slate-900/60 z-[100] hidden flex items-center justify-center p-4 backdrop-blur-sm transition-opacity">
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden transform scale-100 transition-transform p-6 text-center">
-            <div class="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-4 text-red-500">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-            </div>
-            <h3 class="text-xl font-bold text-slate-800 mb-2">¿Cerrar Sesión?</h3>
-            <p class="text-sm text-slate-500 mb-6">¿Estás seguro de que deseas salir del panel de control?</p>
-            <div class="flex flex-col sm:flex-row justify-center space-y-3 sm:space-y-0 sm:space-x-3">
-                <button type="button" id="btn-cancel-logout" class="px-5 py-2.5 rounded-xl font-medium text-slate-600 hover:bg-slate-100 transition-colors w-full sm:w-auto">
-                    Cancelar
-                </button>
-                <button type="button" id="btn-confirm-logout" class="px-5 py-2.5 rounded-xl font-bold text-white bg-red-600 hover:bg-red-700 shadow-md shadow-red-200 transition-colors w-full sm:w-auto">
-                    Cerrar Sesión
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <script src="./js/app.js"></script>
-</body>
-</html>
+<!DOCTYPE html><html lang="es"><head>    <meta charset="UTF-8">    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>CRM Sales MVP</title>        <script>        if (!localStorage.getItem('crm_user_logged')) {            window.location.replace('login.html');        }    </script>    <script src="https://cdn.tailwindcss.com"></script>        <script>        tailwind.config = {            theme: {                extend: {                    colors: {                        brand: '#6366f1',                        sidebar: '#0f172a',                    }                }            }        }    </script></head><body class="antialiased">        <div class="flex flex-row h-screen w-full overflow-hidden bg-gray-100">                <div id="sidebar-overlay" class="fixed inset-0 bg-slate-900/50 z-40 hidden md:hidden transition-opacity"></div>                <aside id="sidebar" class="group/sidebar w-64 md:w-20 md:hover:w-64 bg-sidebar text-white flex-shrink-0 flex flex-col justify-between absolute inset-y-0 left-0 z-50 transform -translate-x-full md:relative md:translate-x-0 transition-all duration-300 ease-in-out overflow-x-hidden">            <div>                                <div class="h-16 flex items-center px-6 border-b border-slate-800 whitespace-nowrap">                    <svg class="w-8 h-8 flex-shrink-0 text-brand mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>                    </svg>                    <span class="text-xl font-bold tracking-wider transition-opacity duration-300 md:opacity-0 md:group-hover/sidebar:opacity-100">CRM Sales</span>                </div>                                <nav class="mt-6 px-4 space-y-2">                    <a href="#" data-section="Dashboard" class="nav-link flex items-center px-4 py-3 text-white bg-slate-800 rounded-lg transition-colors group relative whitespace-nowrap overflow-hidden">                        <svg class="w-5 h-5 mr-3 flex-shrink-0 text-gray-400 group-hover:text-brand transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>                        <span class="transition-opacity duration-300 md:opacity-0 md:group-hover/sidebar:opacity-100">Dashboard</span>                    </a>                    <a href="#" data-section="Leads" class="nav-link flex items-center px-4 py-3 text-gray-300 hover:text-white hover:bg-slate-800 rounded-lg transition-colors group relative whitespace-nowrap overflow-hidden">                        <svg class="w-5 h-5 mr-3 flex-shrink-0 text-gray-400 group-hover:text-brand transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>                        <span class="transition-opacity duration-300 md:opacity-0 md:group-hover/sidebar:opacity-100">Leads</span>                    </a>                    <a href="#" data-section="Ventas" class="nav-link flex items-center px-4 py-3 text-gray-300 hover:text-white hover:bg-slate-800 rounded-lg transition-colors group relative whitespace-nowrap overflow-hidden">                        <svg class="w-5 h-5 mr-3 flex-shrink-0 text-gray-400 group-hover:text-brand transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>                        <span class="transition-opacity duration-300 md:opacity-0 md:group-hover/sidebar:opacity-100">Ventas</span>                    </a>                    <a href="#" data-section="Configuración" class="nav-link flex items-center px-4 py-3 text-gray-300 hover:text-white hover:bg-slate-800 rounded-lg transition-colors group relative whitespace-nowrap overflow-hidden">                        <svg class="w-5 h-5 mr-3 flex-shrink-0 text-gray-400 group-hover:text-brand transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>                        <span class="transition-opacity duration-300 md:opacity-0 md:group-hover/sidebar:opacity-100">Configuración</span>                    </a>                </nav>            </div>                        <div class="p-4 border-t border-slate-800">                <a href="#" class="flex items-center w-full px-3 py-3 hover:bg-slate-800 rounded-lg transition-colors group whitespace-nowrap overflow-hidden">                    <div class="w-9 h-9 rounded-full bg-brand flex items-center justify-center text-white font-bold mr-3 shadow-md flex-shrink-0">                        A                    </div>                    <div class="flex-1 text-left transition-opacity duration-300 md:opacity-0 md:group-hover/sidebar:opacity-100">                        <p class="text-sm font-medium text-white">Admin</p>                        <p class="text-xs text-gray-400">admin@crm.com</p>                    </div>                    <svg class="w-5 h-5 text-gray-400 group-hover:text-white flex-shrink-0 transition-opacity duration-300 md:opacity-0 md:group-hover/sidebar:opacity-100 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path></svg>                </a>            </div>        </aside>                <main class="flex-1 flex flex-col h-screen overflow-hidden">                                    <header class="bg-white border-b border-gray-200 h-16 flex items-center justify-between px-8 flex-shrink-0">                                <div class="flex items-center">                    <button id="mobile-menu-btn" class="md:hidden mr-4 text-slate-500 hover:text-slate-800 transition-colors">                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>                    </button>                    <div class="text-gray-500 font-medium text-sm hidden sm:block">                        CRM Sales <span class="mx-2 text-gray-300">/</span> <span id="breadcrumb-current" class="text-gray-800 font-semibold">Dashboard</span>                    </div>                </div>                                                <button id="logout-btn" class="flex items-center text-red-600 border border-red-200 hover:bg-red-50 rounded-xl px-4 py-2 transition duration-200 text-sm font-medium">                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>                    </svg>                    Logout                </button>            </header>                        <div class="flex-1 overflow-y-auto p-8 bg-slate-50">                <div id="view-dashboard" class="view-section">                                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">                                                            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex items-center">                        <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center mr-4 flex-shrink-0">                            <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>                        </div>                        <div>                            <p class="text-sm font-medium text-slate-500">Total Leads</p>                            <div class="flex items-center mt-1">                                <h3 id="kpi-total-leads" class="text-2xl font-bold text-slate-800">...</h3>                            </div>                        </div>                    </div>                                        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex items-center">                        <div class="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center mr-4 flex-shrink-0">                            <svg class="w-6 h-6 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>                        </div>                        <div>                            <p class="text-sm font-medium text-slate-500">Ventas Cerradas</p>                            <div class="flex items-center mt-1">                                <h3 id="kpi-ventas-cerradas" class="text-2xl font-bold text-slate-800">...</h3>                            </div>                        </div>                    </div>                                        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex items-center">                        <div class="w-12 h-12 rounded-full bg-indigo-50 flex items-center justify-center mr-4 flex-shrink-0">                            <svg class="w-6 h-6 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>                        </div>                        <div>                            <p class="text-sm font-medium text-slate-500">Ingresos</p>                            <div class="flex items-center mt-1">                                <h3 id="kpi-ingresos" class="text-2xl font-bold text-slate-800">...</h3>                            </div>                        </div>                    </div>                                        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex items-center">                        <div class="w-12 h-12 rounded-full bg-rose-50 flex items-center justify-center mr-4 flex-shrink-0">                            <svg class="w-6 h-6 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>                        </div>                        <div>                            <p class="text-sm font-medium text-slate-500">Tasa de Cierre</p>                            <div class="flex items-center mt-1">                                <h3 id="kpi-tasa-cierre" class="text-2xl font-bold text-slate-800">...</h3>                            </div>                        </div>                    </div>                </div>                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">                                                            <div class="bg-slate-200/50 rounded-2xl p-4 flex flex-col h-full">                        <div class="flex items-center justify-between mb-4 px-2">                            <div class="flex items-center space-x-2">                                <h3 class="font-semibold text-slate-700">Prospección</h3>                                <span id="count-prospeccion" class="bg-slate-300 text-slate-700 text-xs font-bold px-2 py-1 rounded-full">0</span>                            </div>                            <button id="btn-new-lead" class="text-brand hover:bg-slate-300/60 p-1.5 rounded-xl transition-colors flex items-center justify-center" title="Registrar nuevo lead">                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>                                </svg>                            </button>                        </div>                        <div id="col-prospeccion" class="space-y-3 flex-1">                        </div>                    </div>                                        <div class="bg-slate-200/50 rounded-2xl p-4 flex flex-col h-full">                        <div class="flex items-center justify-between mb-4 px-2">                            <h3 class="font-semibold text-slate-700">Negociación</h3>                            <span id="count-negociacion" class="bg-slate-300 text-slate-700 text-xs font-bold px-2 py-1 rounded-full">0</span>                        </div>                        <div id="col-negociacion" class="space-y-3 flex-1">                        </div>                    </div>                                        <div class="bg-slate-200/50 rounded-2xl p-4 flex flex-col h-full">                        <div class="flex items-center justify-between mb-4 px-2">                            <h3 class="font-semibold text-slate-700">Cerrado/Ganado</h3>                            <span id="count-ganado" class="bg-slate-300 text-slate-700 text-xs font-bold px-2 py-1 rounded-full">0</span>                        </div>                        <div id="col-ganado" class="space-y-3 flex-1">                        </div>                    </div>                </div>                </div>                 <div id="view-leads" class="view-section hidden flex-1 flex flex-col">                    <div class="flex justify-between items-center mb-6">                        <h2 class="text-2xl font-bold text-slate-800">Directorio de Leads</h2>                        <button class="bg-brand hover:bg-brand-light text-white px-4 py-2 rounded-lg font-medium transition-colors shadow-md shadow-brand/30">Exportar CSV</button>                    </div>                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden flex-1 flex flex-col">                        <div class="overflow-x-auto flex-1">                            <table class="w-full text-left border-collapse">                                <thead>                                    <tr class="bg-slate-50 text-slate-500 text-sm uppercase tracking-wider">                                        <th class="p-4 font-semibold border-b border-slate-100">Empresa</th>                                        <th class="p-4 font-semibold border-b border-slate-100">Monto</th>                                        <th class="p-4 font-semibold border-b border-slate-100">Prioridad</th>                                        <th class="p-4 font-semibold border-b border-slate-100">Estado</th>                                        <th class="p-4 font-semibold border-b border-slate-100 text-right">Acciones</th>                                    </tr>                                </thead>                                <tbody id="table-leads-body" class="divide-y divide-slate-100">                                    <tr class="hover:bg-slate-50 transition-colors">                                        <td class="p-4 font-medium text-slate-800">TechCorp Inc.</td>                                        <td class="p-4 font-bold text-slate-900">$15,000</td>                                        <td class="p-4"><span class="bg-red-100 text-red-600 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide">Alta</span></td>                                        <td class="p-4"><span class="text-slate-600 text-sm font-medium flex items-center"><span class="w-2 h-2 rounded-full bg-blue-500 mr-2"></span>Prospección</span></td>                                        <td class="p-4 text-right">                                            <button class="text-slate-400 hover:text-brand transition-colors p-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg></button>                                            <button class="text-slate-400 hover:text-red-500 transition-colors p-1 ml-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>                                        </td>                                    </tr>                                </tbody>                            </table>                        </div>                    </div>                </div>                <div id="view-ventas" class="view-section hidden flex-1 flex flex-col">                    <h2 class="text-2xl font-bold text-slate-800 mb-6">Pipeline de Metas Comerciales</h2>                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">                            <div class="flex justify-between items-end mb-2">                                <div>                                    <p class="text-sm font-medium text-slate-500">Objetivo Mensual Q2</p>                                    <h3 class="text-2xl font-bold text-slate-800">$85,000 <span class="text-sm font-normal text-slate-400">/ $100,000</span></h3>                                </div>                                <span class="text-brand font-bold text-xl">85%</span>                            </div>                            <div class="w-full bg-slate-100 rounded-full h-3 mb-2 overflow-hidden">                                <div class="bg-brand h-3 rounded-full" style="width: 85%"></div>                            </div>                            <p class="text-xs text-slate-400">Faltan $15,000 para alcanzar la meta.</p>                        </div>                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">                            <div class="flex justify-between items-end mb-2">                                <div>                                    <p class="text-sm font-medium text-slate-500">Nuevos Clientes</p>                                    <h3 class="text-2xl font-bold text-slate-800">24 <span class="text-sm font-normal text-slate-400">/ 30 empresas</span></h3>                                </div>                                <span class="text-green-500 font-bold text-xl">80%</span>                            </div>                            <div class="w-full bg-slate-100 rounded-full h-3 mb-2 overflow-hidden">                                <div class="bg-green-500 h-3 rounded-full" style="width: 80%"></div>                            </div>                            <p class="text-xs text-slate-400">6 clientes pendientes para el bono trimestral.</p>                        </div>                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 lg:col-span-2 h-64 flex items-center justify-center flex-col">                            <svg class="w-16 h-16 text-slate-200 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>                            <p class="text-slate-400 font-medium">Área reservada para integración con Chart.js o ApexCharts</p>                        </div>                    </div>                </div>                <div id="view-config" class="view-section hidden flex-1 flex flex-col max-w-3xl">                    <h2 class="text-2xl font-bold text-slate-800 mb-6">Ajustes del Sistema</h2>                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">                        <form id="form-settings" class="p-6 md:p-8 space-y-6" onsubmit="event.preventDefault();">                            <div>                                <label class="block text-sm font-medium text-slate-700 mb-2" for="setting_company">Nombre de la Empresa</label>                                <input type="text" id="setting_company" value="CRM Sales MVP" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all">                            </div>                            <div>                                <label class="block text-sm font-medium text-slate-700 mb-2" for="setting_email">Correo Electrónico de Soporte</label>                                <input type="email" id="setting_email" value="soporte@crmsales.com" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all">                            </div>                            <div class="border-t border-slate-100 pt-6 mt-6 space-y-4">                                <h3 class="text-lg font-bold text-slate-800 mb-4">Preferencias de Notificación</h3>                                <label class="flex items-center justify-between cursor-pointer group">                                    <div>                                        <p class="font-medium text-slate-800">Alertas por Correo</p>                                        <p class="text-sm text-slate-500">Recibe notificaciones cuando un lead cambie a ganado.</p>                                    </div>                                    <div class="relative">                                        <input type="checkbox" class="sr-only peer" checked>                                        <div class="block bg-slate-300 peer-checked:bg-brand w-14 h-8 rounded-full transition-colors"></div>                                        <div class="absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition-transform peer-checked:translate-x-6"></div>                                    </div>                                </label>                                <label class="flex items-center justify-between cursor-pointer group">                                    <div>                                        <p class="font-medium text-slate-800">Reporte Semanal</p>                                        <p class="text-sm text-slate-500">Recibe un resumen con el desempeño del equipo.</p>                                    </div>                                    <div class="relative">                                        <input type="checkbox" class="sr-only peer">                                        <div class="block bg-slate-300 peer-checked:bg-brand w-14 h-8 rounded-full transition-colors"></div>                                        <div class="absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition-transform peer-checked:translate-x-6"></div>                                    </div>                                </label>                            </div>                            <div class="pt-6 border-t border-slate-100 flex justify-end">                                <button type="submit" class="bg-brand hover:bg-brand-light text-white px-6 py-3 rounded-xl font-bold transition-colors shadow-lg shadow-brand/30 flex items-center">                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>                                    Guardar Ajustes                                </button>                            </div>                        </form>                    </div>                </div>            </div>        </main>            </div>    <div id="modal-new-lead" class="fixed inset-0 bg-slate-900/60 z-[100] hidden flex items-center justify-center p-4 backdrop-blur-sm transition-opacity">        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden transform scale-100 transition-transform">            <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">                <h3 class="text-lg font-bold text-slate-800">Registrar Nuevo Lead</h3>                <button id="btn-close-modal-icon" class="text-slate-400 hover:text-slate-600 transition-colors">                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>                </button>            </div>            <form id="form-new-lead" class="p-6 space-y-4">                <div>                    <label class="block text-sm font-semibold text-slate-700 mb-1">Nombre de la Empresa</label>                    <input type="text" id="lead_empresa" required placeholder="Ej: TechCorp Inc." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent text-slate-900 bg-slate-50 focus:bg-white transition-shadow">                </div>                <div>                    <label class="block text-sm font-semibold text-slate-700 mb-1">Monto Estimado ($)</label>                    <input type="number" id="lead_monto" required placeholder="Ej: 15000" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent text-slate-900 bg-slate-50 focus:bg-white transition-shadow">                </div>                <div>                    <label class="block text-sm font-semibold text-slate-700 mb-1">Prioridad</label>                    <select id="lead_prioridad" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent text-slate-900 bg-slate-50 focus:bg-white transition-shadow appearance-none">                        <option value="Alta">Alta (Urgente)</option>                        <option value="Media" selected>Media</option>                        <option value="Baja">Baja</option>                    </select>                </div>                <div class="pt-4 flex justify-end space-x-3">                    <button type="button" id="btn-cancel-lead" class="px-5 py-2.5 rounded-xl font-medium text-slate-600 hover:bg-slate-100 transition-colors">                        Cancelar                    </button>                    <button type="submit" class="px-5 py-2.5 rounded-xl font-bold text-white bg-brand hover:bg-indigo-600 shadow-md shadow-indigo-200 transition-colors">                        Guardar Lead                    </button>                </div>            </form>        </div>    </div>    <div id="modal-logout" class="fixed inset-0 bg-slate-900/60 z-[100] hidden flex items-center justify-center p-4 backdrop-blur-sm transition-opacity">        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden transform scale-100 transition-transform p-6 text-center">            <div class="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-4 text-red-500">                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>            </div>            <h3 class="text-xl font-bold text-slate-800 mb-2">¿Cerrar Sesión?</h3>            <p class="text-sm text-slate-500 mb-6">¿Estás seguro de que deseas salir del panel de control?</p>            <div class="flex flex-col sm:flex-row justify-center space-y-3 sm:space-y-0 sm:space-x-3">                <button type="button" id="btn-cancel-logout" class="px-5 py-2.5 rounded-xl font-medium text-slate-600 hover:bg-slate-100 transition-colors w-full sm:w-auto">                    Cancelar                </button>                <button type="button" id="btn-confirm-logout" class="px-5 py-2.5 rounded-xl font-bold text-white bg-red-600 hover:bg-red-700 shadow-md shadow-red-200 transition-colors w-full sm:w-auto">                    Cerrar Sesión                </button>            </div>        </div>    </div>    <script src="./js/app.js"></script></body></html>
