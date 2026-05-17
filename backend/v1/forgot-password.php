@@ -28,15 +28,15 @@ if (!empty($data->email)) {
     $query = "SELECT id FROM usuarios WHERE email = ?";
     $stmt = $db->prepare($query);
     $stmt->execute([$email]);
-        if ($stmt->rowCount() > 0) {
+    if ($stmt->rowCount() > 0) {
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
-                // Generar un token único
+        // Generar un token único
         $token = bin2hex(random_bytes(16));
         // Expiración de 15 minutos
         $expires = date('Y-m-d H:i:s', strtotime('+15 minutes'));
-                $update_query = "UPDATE usuarios SET reset_token = ?, token_expires = ? WHERE id = ?";
+        $update_query = "UPDATE usuarios SET reset_token = ?, token_expires = ? WHERE id = ?";
         $update_stmt = $db->prepare($update_query);
-                if ($update_stmt->execute([$token, $expires, $user['id']])) {
+        if ($update_stmt->execute([$token, $expires, $user['id']])) {
             http_response_code(200);
             echo json_encode([
                 "status" => "success",
