@@ -21,43 +21,33 @@ if ($db === null) {
 
 $data = json_decode(file_get_contents("php://input"));
 
-if (empty($data->email) || empty($data->password)) {
+if (empty($data->email)) {
     http_response_code(400);
-    echo json_encode(["status" => "error", "message" => "Datos incompletos."]);
+    echo json_encode(["status" => "error", "message" => "El correo electrónico es requerido."]);
     exit;
 }
 
 $email = trim($data->email);
-$password = trim($data->password);
 
 $sqlPattern = '/(\'|"|;|--|\/\*|\*\/|\b(SELECT|UNION|INSERT|DELETE|UPDATE|DROP|ALTER|EXEC)\b)/i';
-if (preg_match($sqlPattern, $email) || preg_match($sqlPattern, $password)) {
+if (preg_match($sqlPattern, $email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
     http_response_code(400);
-    echo json_encode(["status" => "error", "message" => "Entrada maliciosa detectada."]);
+    echo json_encode(["status" => "error", "message" => "El formato del correo es inválido o contiene caracteres prohibidos."]);
     exit;
 }
 
 try {
-    $query = "SELECT id, nombre, password, rol_id FROM usuarios WHERE email = :email";
+    $query = "SELECT id FROM usuarios WHERE email = :email";
     $stmt = $db->prepare($query);
     $stmt->bindParam(':email', $email);
     $stmt->execute();
     
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    if ($user && password_verify($password, trim($user['password']))) {
-        http_response_code(200);
-        echo json_encode([
-            "status" => "success",
-            "message" => "¡Bienvenido, " . $user['nombre'] . "!",
-            "data" => ["id" => $user['id'], "rol_id" => $user['rol_id']]
-        ]);
+    if ($stmt->rowCount() === 0) {
+        http_response_code(404);
+        echo json_encode(["status" => "error", "message" => "El correo electrónico no se encuentra registrado."]);
     } else {
-        http_response_code(401);
-        echo json_encode([
-            "status" => "error",
-            "message" => "Correo o contraseña incorrectos."
-        ]);
+        http_response_code(200);
+        echo json_encode(["status" => "success", "message" => "El correo existe, puede continuar con el cambio de contraseña."]);
     }
 } catch (PDOException $e) {
     http_response_code(500);
