@@ -1,0 +1,40 @@
+<div class="contenedor-vista">
+  <div class="cabecera-vista">
+    <h2 class="titulo-vista">Directorio de Solicitudes (B2B)</h2>
+    <button class="btn-exportar">Exportar CSV</button>
+  </div>
+  
+  <div class="tarjeta-tabla">
+    <table class="tabla-solicitudes">
+      <thead>
+        <tr>
+          <th>Local Comercial</th>
+          <th>Presupuesto</th>
+          <th>Prioridad</th>
+          <th>Estado</th>
+          <th class="texto-derecha">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (solicitud of solicitudes; track solicitud.local) {
+          <tr>
+            <td class="font-bold">{{ solicitud.local }}</td>
+            <td>{{ solicitud.presupuesto }}</td>
+            <td>
+              <span class="badge-prioridad badge-{{ solicitud.prioridad | lowercase }}">
+                {{ solicitud.prioridad }}
+              </span>
+            </td>
+            <td>
+              <span class="estado-circulo"></span> {{ solicitud.estado }}
+            </td>
+            <td class="texto-derecha acciones">
+              <button class="btn-accion">Editar</button>
+              <button class="btn-accion btn-peligro">Borrar</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

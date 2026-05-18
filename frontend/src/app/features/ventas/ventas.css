@@ -1,0 +1,90 @@
+.contenedor-vista {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.titulo-vista {
+  margin: 0 0 1rem 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.grid-metas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.tarjeta-meta {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  border: 1px solid #e2e8f0;
+}
+
+.cabecera-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 1rem;
+}
+
+.subtitulo-meta {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #64748b;
+}
+
+.valor-meta {
+  margin: 0.25rem 0 0 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.valor-total {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #94a3b8;
+}
+
+.porcentaje-meta {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.porcentaje-azul { color: #6366f1; }
+.porcentaje-verde { color: #22c55e; }
+
+.barra-fondo {
+  width: 100%;
+  background-color: #f1f5f9;
+  border-radius: 9999px;
+  height: 0.75rem;
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+}
+
+.barra-progreso {
+  height: 100%;
+  border-radius: 9999px;
+}
+
+.progreso-azul { background-color: #6366f1; }
+.progreso-verde { background-color: #22c55e; }
+
+.nota-meta {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+@media (max-width: 768px) {
+  .grid-metas {
+    grid-template-columns: 1fr;
+  }
+}

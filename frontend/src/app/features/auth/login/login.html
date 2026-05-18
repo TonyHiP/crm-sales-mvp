@@ -1,0 +1,55 @@
+<div class="contenedor-principal">
+  <div class="tarjeta-principal">
+    
+    
+    <div class="encabezado-login">
+      <div class="icono-contenedor">
+        <svg class="icono" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+        </svg>
+      </div>
+      <h1 class="titulo">Bienvenido al Portal B2B</h1>
+      <p class="subtitulo">Ingresa tus credenciales para acceder al panel de control</p>
+    </div>
+
+    
+    <form class="formulario-login" (ngSubmit)="onLogin()">
+      
+      
+      <div class="grupo-formulario">
+        <label for="email" class="etiqueta">Correo Electrónico</label>
+        <div class="contenedor-input">
+          <div class="icono-input">
+            <svg class="icono-pequeno" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"></path></svg>
+          </div>
+          <input type="email" id="email" name="email" [(ngModel)]="email" required placeholder="admin@empresa.com" class="input-texto">
+        </div>
+      </div>
+
+      
+      <div class="grupo-formulario">
+        <div class="encabezado-password">
+          <label for="password" class="etiqueta">Contraseña</label>
+          <a routerLink="/password-reset" class="enlace-olvido">¿Olvidaste tu contraseña?</a>
+        </div>
+        <div class="contenedor-input">
+          <div class="icono-input">
+            <svg class="icono-pequeno" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+          </div>
+          <input type="password" id="password" name="password" [(ngModel)]="password" required placeholder="••••••••" class="input-texto">
+        </div>
+      </div>
+
+      
+      <p *ngIf="errorMessage" class="mensaje-error">{{ errorMessage }}</p>
+
+      
+      <button type="submit" class="btn-primario" [disabled]="isLoading">
+        <span *ngIf="!isLoading">Iniciar Sesión</span>
+        <svg *ngIf="!isLoading" class="icono-btn" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        <span *ngIf="isLoading" class="spinner"></span>
+      </button>
+
+    </form>
+  </div>
+</div>

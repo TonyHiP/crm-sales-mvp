@@ -1,0 +1,74 @@
+<div class="contenedor-registro">
+  <div class="tarjeta-registro">
+    <h2 class="titulo-registro">Registro de Nuevo Personal</h2>
+    <p class="subtitulo-registro">Agrega nuevos miembros al sistema y define sus permisos de acceso.</p>
+
+    @if (errorMessage) {
+      <div class="alerta-error">{{ errorMessage }}</div>
+    }
+    @if (successMessage) {
+      <div class="alerta-exito">{{ successMessage }}</div>
+    }
+
+    <form class="formulario-registro" (ngSubmit)="onRegister()">
+      
+      <div class="grupo-campo">
+        <label class="etiqueta-campo" for="nombres">Nombres <span class="requerido">*</span></label>
+        <input class="input-campo" type="text" id="nombres" name="nombres" [(ngModel)]="userData.nombres" required>
+      </div>
+
+      <div class="grupo-campo">
+        <label class="etiqueta-campo" for="apellidos">Apellidos <span class="requerido">*</span></label>
+        <input class="input-campo" type="text" id="apellidos" name="apellidos" [(ngModel)]="userData.apellidos" required>
+      </div>
+
+      <div class="grupo-campo">
+        <label class="etiqueta-campo" for="cedula">Cédula <span class="requerido">*</span></label>
+        <input class="input-campo" type="text" id="cedula" name="cedula" [(ngModel)]="userData.cedula" required maxlength="10">
+      </div>
+
+      <div class="grupo-campo">
+        <label class="etiqueta-campo" for="fecha_nacimiento">Fecha de Nacimiento <span class="requerido">*</span></label>
+        <input class="input-campo" type="date" id="fecha_nacimiento" name="fecha_nacimiento" [(ngModel)]="userData.fecha_nacimiento" required>
+      </div>
+
+      <div class="grupo-campo">
+        <label class="etiqueta-campo" for="email">Correo Electrónico <span class="requerido">*</span></label>
+        <input class="input-campo" type="email" id="email" name="email" [(ngModel)]="userData.email" required>
+      </div>
+
+      <div class="grupo-campo">
+        <label class="etiqueta-campo" for="celular">Celular <span class="requerido">*</span></label>
+        <input class="input-campo" type="text" id="celular" name="celular" [(ngModel)]="userData.celular" required>
+      </div>
+
+      <div class="grupo-campo">
+        <label class="etiqueta-campo" for="password">Contraseña <span class="requerido">*</span></label>
+        <input class="input-campo" type="password" id="password" name="password" [(ngModel)]="userData.password" required>
+      </div>
+
+      <div class="grupo-campo">
+        <label class="etiqueta-campo" for="confirmPassword">Confirmar Contraseña <span class="requerido">*</span></label>
+        <input class="input-campo" type="password" id="confirmPassword" name="confirmPassword" [(ngModel)]="userData.confirmPassword" required>
+      </div>
+
+      <div class="grupo-campo columna-completa">
+        <label class="etiqueta-campo" for="rol">Rol en el Sistema <span class="requerido">*</span></label>
+        <select class="input-campo" id="rol" name="rol_id" [(ngModel)]="userData.rol_id">
+          <option [ngValue]="1">Administrador (ID: 1)</option>
+          <option [ngValue]="2">Ejecutivo de Cuentas B2B (ID: 2)</option>
+        </select>
+      </div>
+
+      <div class="columna-completa contenedor-boton">
+        <button type="submit" class="btn-primario" [disabled]="isLoading">
+          @if (isLoading) {
+            <span class="spinner-carga"></span> Guardando...
+          } @else {
+            Guardar Usuario
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

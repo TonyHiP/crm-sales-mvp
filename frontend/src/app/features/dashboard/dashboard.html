@@ -1,0 +1,76 @@
+<div class="contenedor-dashboard">
+  
+  <div class="fila-kpis">
+    <div class="tarjeta-kpi">
+      <h3 class="kpi-titulo">Total Solicitudes</h3>
+      <p class="kpi-valor">{{ totalLeads }}</p>
+    </div>
+    <div class="tarjeta-kpi">
+      <h3 class="kpi-titulo">Proformas Aprobadas</h3>
+      <p class="kpi-valor">{{ ventasCerradas }}</p>
+    </div>
+    <div class="tarjeta-kpi">
+      <h3 class="kpi-titulo">Facturación Total ($)</h3>
+      <p class="kpi-valor">${{ ingresos }}</p>
+    </div>
+    <div class="tarjeta-kpi">
+      <h3 class="kpi-titulo">Tasa de Conversión</h3>
+      <p class="kpi-valor">{{ tasaCierre }}%</p>
+    </div>
+  </div>
+
+  <div class="contenedor-columnas">
+    
+    
+    <div class="columna-pipeline">
+      <div class="cabecera-columna">
+        <h4 class="titulo-columna">Prospección</h4>
+        <span class="contador-columna">{{ leadsProspeccion.length }}</span>
+      </div>
+      <div class="cuerpo-columna">
+        @for (lead of leadsProspeccion; track lead.id || $index) {
+          <div class="proforma-tarjeta">
+            <h5 class="tarjeta-empresa">Local Comercial / Distribuidor: <br><strong>{{ lead.empresa || lead.nombre }}</strong></h5>
+            <p class="tarjeta-monto">Presupuesto del Lote ($): <strong>${{ lead.monto }}</strong></p>
+            <p class="tarjeta-categoria">Categoría de Hardware: <strong>{{ lead.categoria || 'General' }}</strong></p>
+          </div>
+        }
+      </div>
+    </div>
+
+    
+    <div class="columna-pipeline">
+      <div class="cabecera-columna">
+        <h4 class="titulo-columna">Negociación</h4>
+        <span class="contador-columna">{{ leadsNegociacion.length }}</span>
+      </div>
+      <div class="cuerpo-columna">
+        @for (lead of leadsNegociacion; track lead.id || $index) {
+          <div class="proforma-tarjeta">
+            <h5 class="tarjeta-empresa">Local Comercial / Distribuidor: <br><strong>{{ lead.empresa || lead.nombre }}</strong></h5>
+            <p class="tarjeta-monto">Presupuesto del Lote ($): <strong>${{ lead.monto }}</strong></p>
+            <p class="tarjeta-categoria">Categoría de Hardware: <strong>{{ lead.categoria || 'General' }}</strong></p>
+          </div>
+        }
+      </div>
+    </div>
+
+    
+    <div class="columna-pipeline">
+      <div class="cabecera-columna">
+        <h4 class="titulo-columna">Aprobado/Ganado</h4>
+        <span class="contador-columna">{{ leadsGanados.length }}</span>
+      </div>
+      <div class="cuerpo-columna">
+        @for (lead of leadsGanados; track lead.id || $index) {
+          <div class="proforma-tarjeta">
+            <h5 class="tarjeta-empresa">Local Comercial / Distribuidor: <br><strong>{{ lead.empresa || lead.nombre }}</strong></h5>
+            <p class="tarjeta-monto">Presupuesto del Lote ($): <strong>${{ lead.monto }}</strong></p>
+            <p class="tarjeta-categoria">Categoría de Hardware: <strong>{{ lead.categoria || 'General' }}</strong></p>
+          </div>
+        }
+      </div>
+    </div>
+
+  </div>
+</div>

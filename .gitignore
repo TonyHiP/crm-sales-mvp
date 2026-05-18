@@ -1,18 +1,58 @@
+# =========================
+# Node & Angular (Frontend)
+# =========================
 **/node_modules/
 **/.angular/
 **/dist/
-.editorconfig
-.browserslistrc
+**/tmp/
+**/out-tsc/
+**/bazel-out/
+**/.sass-cache/
+**/coverage/
+**/typings/
+**/__screenshots__/
+npm-debug.log
+yarn-error.log
+testem.log
+/libpeerconnection.log
+/connect.lock
 
+# =========================
+# PHP & Backend
+# =========================
 **/vendor/
 .env
 v1/reset.php
 *.log
 
+# =========================
+# Base de Datos
+# =========================
 *.bak
 *.sql.gz
 
-.vscode/
+# =========================
+# IDEs y Editores
+# =========================
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/mcp.json
+.history/*
 .idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# =========================
+# Sistema y Varios
+# =========================
 .DS_Store
 Thumbs.db
+.editorconfig
+.browserslistrc
