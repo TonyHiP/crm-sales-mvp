@@ -1,0 +1,43 @@
+<div class="contenedor-vista">
+  <h2 class="titulo-vista">Ajustes del Sistema B2B</h2>
+
+  <div class="tarjeta-config">
+    <form class="formulario-config" (submit)="$event.preventDefault()">
+      
+      <div class="grupo-campo">
+        <label class="etiqueta-campo" for="empresa">Nombre de la Empresa Importadora</label>
+        <input class="input-campo" type="text" id="empresa" value="TechStore Importaciones">
+      </div>
+
+      <div class="grupo-campo">
+        <label class="etiqueta-campo" for="correo">Correo Electrónico de Soporte</label>
+        <input class="input-campo" type="email" id="correo" value="soporte@techstore.com">
+      </div>
+
+      <div class="separador-seccion">
+        <h3 class="titulo-seccion">Preferencias de Notificación</h3>
+        
+        <label class="opcion-checkbox">
+          <div class="checkbox-textos">
+            <span class="checkbox-titulo">Alertas por Correo</span>
+            <span class="checkbox-desc">Recibe notificaciones de proformas ganadas.</span>
+          </div>
+          <input type="checkbox" checked class="input-checkbox">
+        </label>
+
+        <label class="opcion-checkbox">
+          <div class="checkbox-textos">
+            <span class="checkbox-titulo">Reporte Semanal</span>
+            <span class="checkbox-desc">Recibe el resumen de ventas del equipo.</span>
+          </div>
+          <input type="checkbox" class="input-checkbox">
+        </label>
+      </div>
+
+      <div class="contenedor-boton">
+        <button type="submit" class="btn-primario">Guardar Ajustes</button>
+      </div>
+
+    </form>
+  </div>
+</div>

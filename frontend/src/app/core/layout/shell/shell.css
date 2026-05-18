@@ -1,0 +1,25 @@
+.panel-contenedor-global {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.panel-cuerpo-derecho {
+  display: flex;
+  flex-direction: column;
+  flex: 1; 
+  height: 100vh;
+  overflow: hidden;
+  background-color: #f8fafc; 
+  box-sizing: border-box;
+}
+
+.panel-area-trabajo {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2rem;
+  box-sizing: border-box;
+}

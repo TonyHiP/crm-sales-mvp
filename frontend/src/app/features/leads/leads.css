@@ -1,0 +1,119 @@
+.contenedor-vista {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.cabecera-vista {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.titulo-vista {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.btn-exportar {
+  background-color: #6366f1;
+  color: #ffffff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-exportar:hover {
+  background-color: #4f46e5;
+}
+
+.tarjeta-tabla {
+  background-color: #ffffff;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+}
+
+.tabla-solicitudes {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.tabla-solicitudes th {
+  background-color: #f8fafc;
+  color: #64748b;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.tabla-solicitudes td {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+  color: #334155;
+  font-size: 0.875rem;
+}
+
+.tabla-solicitudes tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.tabla-solicitudes tbody tr:hover {
+  background-color: #f1f5f9;
+}
+
+.font-bold {
+  font-weight: 700;
+  color: #0f172a !important;
+}
+
+.badge-prioridad {
+  padding: 0.25rem 0.5rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.badge-alta { background-color: #fee2e2; color: #dc2626; }
+.badge-media { background-color: #fef3c7; color: #d97706; }
+.badge-baja { background-color: #dcfce3; color: #16a34a; }
+
+.estado-circulo {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: #6366f1;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+}
+
+.texto-derecha {
+  text-align: right;
+}
+
+.acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.btn-accion {
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.btn-accion:hover { color: #6366f1; }
+.btn-accion.btn-peligro:hover { color: #dc2626; }

@@ -1,0 +1,33 @@
+<div class="contenedor-vista">
+  <h2 class="titulo-vista">Pipeline de Metas Comerciales</h2>
+  
+  <div class="grid-metas">
+    <div class="tarjeta-meta">
+      <div class="cabecera-meta">
+        <div>
+          <p class="subtitulo-meta">Objetivo Mensual Q2</p>
+          <h3 class="valor-meta">${{ ingresos.toLocaleString('en-US') }} <span class="valor-total">/ ${{ metaIngresos.toLocaleString('en-US') }}</span></h3>
+        </div>
+        <span class="porcentaje-meta porcentaje-azul">{{ progresoIngresos }}%</span>
+      </div>
+      <div class="barra-fondo">
+        <div class="barra-progreso progreso-azul" [style.width.%]="progresoIngresos"></div>
+      </div>
+      <p class="nota-meta">Faltan ${{ faltanteIngresos.toLocaleString('en-US') }} para alcanzar la meta.</p>
+    </div>
+
+    <div class="tarjeta-meta">
+      <div class="cabecera-meta">
+        <div>
+          <p class="subtitulo-meta">Nuevos Distribuidores</p>
+          <h3 class="valor-meta">{{ distribuidores }} <span class="valor-total">/ {{ metaDistribuidores }} empresas</span></h3>
+        </div>
+        <span class="porcentaje-meta porcentaje-verde">{{ progresoDistribuidores }}%</span>
+      </div>
+      <div class="barra-fondo">
+        <div class="barra-progreso progreso-verde" [style.width.%]="progresoDistribuidores"></div>
+      </div>
+      <p class="nota-meta">{{ faltanteDistribuidores }} clientes pendientes para el bono trimestral.</p>
+    </div>
+  </div>
+</div>
