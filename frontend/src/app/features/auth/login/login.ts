@@ -59,10 +59,10 @@ export class LoginComponent {
       },
       error: (err: any) => {
         this.isLoading = false;
-        if (err.status === 401) {
-          this.errorMessage = 'Correo electrónico o contraseña incorrectos.';
-        } else if (err.error && err.error.message) {
+        if (err.error && err.error.message) {
           this.errorMessage = err.error.message;
+        } else if (err.status === 401) {
+          this.errorMessage = 'Correo electrónico o contraseña incorrectos.';
         } else {
           this.errorMessage = 'No se pudo conectar con el servidor de licencias B2B.';
         }

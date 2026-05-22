@@ -7,6 +7,7 @@ import { Ventas } from './features/ventas/ventas';
 import { Config } from './features/config/config';
 import { LoginComponent } from './features/auth/login/login';
 import { PasswordReset } from './features/auth/password-reset/password-reset';
+import { adminGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -19,8 +20,8 @@ export const routes: Routes = [
       { path: 'dashboard', component: Dashboard },
       { path: 'leads', component: Leads },
       { path: 'ventas', component: Ventas },
-      { path: 'config', component: Config },
-      { path: 'registro', component: UserRegistration },
+      { path: 'config', component: Config, canActivate: [adminGuard] },
+      { path: 'registro', component: UserRegistration, canActivate: [adminGuard] },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },

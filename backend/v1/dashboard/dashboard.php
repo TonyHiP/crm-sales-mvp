@@ -19,56 +19,46 @@ if ($db === null) {
     exit;
 }
 
-$data = null; 
-
 try {
-    $query_total = "SELECT COUNT(*) as total FROM leads";
-    $stmt_total = $db->prepare($query_total);
-    $stmt_total->execute();
-    $total_leads = $stmt_total->fetch(PDO::FETCH_ASSOC)['total'];
-    
-    $estado_ganado = 'Cerrado/Ganado';
-    $query_ingresos = "SELECT COUNT(*) as total_ventas, SUM(monto) as total_ingresos FROM leads WHERE estado = :estado";
-    $stmt_ingresos = $db->prepare($query_ingresos);
-    $stmt_ingresos->bindParam(':estado', $estado_ganado);
-    $stmt_ingresos->execute();
-    $row_ingresos = $stmt_ingresos->fetch(PDO::FETCH_ASSOC);
-    
-    $ventas_cerradas = $row_ingresos['total_ventas'];
-    $ingresos_totales = $row_ingresos['total_ingresos'] ?? 0;
-    
-    $tasa_cierre = $total_leads > 0 ? round(($ventas_cerradas / $total_leads) * 100) : 0;
-    
-    $query_leads = "SELECT id, empresa, monto, prioridad, estado, fecha_contacto FROM leads ORDER BY created_at DESC";
-    $stmt_leads = $db->prepare($query_leads);
-    $stmt_leads->execute();
-    $leads = $stmt_leads->fetchAll(PDO::FETCH_ASSOC);
-    
+    $query_count = "SELECT COUNT(*) as total FROM proformas";
+    $stmt_count = $db->prepare($query_count);
+    $stmt_count->execute();
+    $cantidad_leads = (int)$stmt_count->fetch(PDO::FETCH_ASSOC)['total'];
+
+    $query_facturado = "SELECT SUM(monto_total) as total FROM proformas WHERE estado = 'Ganado'";
+    $stmt_facturado = $db->prepare($query_facturado);
+    $stmt_facturado->execute();
+    $total_facturado = (float)($stmt_facturado->fetch(PDO::FETCH_ASSOC)['total'] ?? 0.00);
+
+    $query_negociacion = "SELECT SUM(monto_total) as total FROM proformas WHERE estado = 'Negociacion'";
+    $stmt_negociacion = $db->prepare($query_negociacion);
+    $stmt_negociacion->execute();
+    $total_negociacion = (float)($stmt_negociacion->fetch(PDO::FETCH_ASSOC)['total'] ?? 0.00);
+
+    $query_recent = "SELECT p.id, p.nombre_local, p.monto_total, p.estado, p.fecha_creacion,
+                            CONCAT(u.nombres, ' ', u.apellidos) AS vendedor
+                     FROM proformas p
+                     INNER JOIN usuarios u ON p.usuario_id = u.id
+                     ORDER BY p.fecha_creacion DESC LIMIT 5";
+    $stmt_recent = $db->prepare($query_recent);
+    $stmt_recent->execute();
+    $recent_proformas = $stmt_recent->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($recent_proformas as &$item) {
+        $item['id'] = (int)$item['id'];
+        $item['monto_total'] = (float)$item['monto_total'];
+    }
+
     http_response_code(200);
     echo json_encode([
         "status" => "success",
         "data" => [
-            "kpis" => [
-                "total_leads" => (int)$total_leads,
-                "ventas_cerradas" => (int)$ventas_cerradas,
-                "ingresos" => (float)$ingresos_totales,
-                "tasa_cierre" => (int)$tasa_cierre
-            ],
-            "leads" => $leads
+            "total_facturado" => $total_facturado,
+            "total_negociacion" => $total_negociacion,
+            "cantidad_leads" => $cantidad_leads,
+            "leads_recientes" => $recent_proformas
         ]
     ]);
 } catch (PDOException $e) {
-    http_response_code(200);
-    echo json_encode([
-        "status" => "success",
-        "data" => [
-            "kpis" => [
-                "total_leads" => 0,
-                "ventas_cerradas" => 0,
-                "ingresos" => 0,
-                "tasa_cierre" => 0
-            ],
-            "leads" => []
-        ]
-    ]);
+    http_response_code(500);
+    echo json_encode(["status" => "error", "message" => "Error interno del servidor: " . $e->getMessage()]);
 }

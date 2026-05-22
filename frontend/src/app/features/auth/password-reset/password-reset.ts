@@ -81,7 +81,6 @@ export class PasswordReset {
         this.errorMessage = '';
         this.cdr.detectChanges(); 
 
-        
         setTimeout(() => {
           this.router.navigate(['/login']);
         }, 2000);

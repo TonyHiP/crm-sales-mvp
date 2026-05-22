@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LeadService } from '../../core/services/lead.service';
+import { LeadService, Proforma } from '../../core/services/lead.service';
 
 @Component({
   selector: 'app-ventas',
@@ -10,40 +10,76 @@ import { LeadService } from '../../core/services/lead.service';
   styleUrl: './ventas.css'
 })
 export class Ventas implements OnInit {
-  ingresos = 0;
-  metaIngresos = 100000;
-  progresoIngresos = 0;
-  faltanteIngresos = 100000;
+  private readonly leadService = inject(LeadService);
 
-  distribuidores = 0;
-  metaDistribuidores = 30;
-  progresoDistribuidores = 0;
-  faltanteDistribuidores = 30;
-
-  constructor(private leadService: LeadService) {}
+  proformas: Proforma[] = [];
+  cargando = false;
+  mensajeExito: string | null = null;
+  mensajeError: string | null = null;
 
   ngOnInit(): void {
-    this.cargarMetas();
+    this.cargarProformas();
   }
 
-  cargarMetas(): void {
-    this.leadService.getDashboardData().subscribe({
-      next: (res: any) => {
-        if (res && res.status === 'success' && res.data && res.data.kpis) {
-          const kpis = res.data.kpis;
-          
-          this.ingresos = kpis.ingresos || 0;
-          this.progresoIngresos = Math.min(Math.round((this.ingresos / this.metaIngresos) * 100), 100);
-          this.faltanteIngresos = Math.max(this.metaIngresos - this.ingresos, 0);
-
-          this.distribuidores = kpis.ventas_cerradas || 0;
-          this.progresoDistribuidores = Math.min(Math.round((this.distribuidores / this.metaDistribuidores) * 100), 100);
-          this.faltanteDistribuidores = Math.max(this.metaDistribuidores - this.distribuidores, 0);
+  cargarProformas(): void {
+    this.cargando = true;
+    this.leadService.getLeads().subscribe({
+      next: (res) => {
+        if (res && res.status === 'success') {
+          this.proformas = res.data;
         }
+        this.cargando = false;
       },
-      error: (err: any) => {
-        console.error('Error cargando las metas comerciales', err);
+      error: (err) => {
+        console.error('Error al cargar proformas en el pipeline:', err);
+        this.mostrarError('No se pudo cargar el pipeline de ventas.');
+        this.cargando = false;
       }
     });
+  }
+
+  actualizarEstado(id: number, nuevoEstado: 'Prospeccion' | 'Negociacion' | 'Ganado'): void {
+    this.leadService.updateStage(id, nuevoEstado).subscribe({
+      next: (res) => {
+        if (res && res.status === 'success') {
+          this.mostrarExito('¡Etapa de venta actualizada!');
+          this.cargarProformas();
+        } else {
+          this.mostrarError(res.message || 'Error al actualizar el estado.');
+        }
+      },
+      error: (err) => {
+        console.error('Error al actualizar etapa:', err);
+        this.mostrarError('Error de red al actualizar la etapa.');
+      }
+    });
+  }
+
+  get proformasProspeccion(): Proforma[] {
+    return this.proformas.filter(p => p.estado === 'Prospeccion');
+  }
+
+  get proformasNegociacion(): Proforma[] {
+    return this.proformas.filter(p => p.estado === 'Negociacion');
+  }
+
+  get proformasGanado(): Proforma[] {
+    return this.proformas.filter(p => p.estado === 'Ganado');
+  }
+
+  sumarMonto(proformasColumna: Proforma[]): number {
+    return proformasColumna.reduce((sum, p) => sum + p.monto_total, 0);
+  }
+
+  private mostrarExito(msg: string): void {
+    this.mensajeExito = msg;
+    this.mensajeError = null;
+    setTimeout(() => this.mensajeExito = null, 3000);
+  }
+
+  private mostrarError(msg: string): void {
+    this.mensajeError = msg;
+    this.mensajeExito = null;
+    setTimeout(() => this.mensajeError = null, 3000);
   }
 }
