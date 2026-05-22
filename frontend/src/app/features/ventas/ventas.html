@@ -1,33 +1,151 @@
 <div class="contenedor-vista">
-  <h2 class="titulo-vista">Pipeline de Metas Comerciales</h2>
-  
-  <div class="grid-metas">
-    <div class="tarjeta-meta">
-      <div class="cabecera-meta">
-        <div>
-          <p class="subtitulo-meta">Objetivo Mensual Q2</p>
-          <h3 class="valor-meta">${{ ingresos.toLocaleString('en-US') }} <span class="valor-total">/ ${{ metaIngresos.toLocaleString('en-US') }}</span></h3>
+  <div class="cabecera-vista">
+    <div>
+      <h2 class="titulo-vista">Pipeline de Ventas B2B</h2>
+      <p class="subtitulo-vista">Monitorea y avanza las negociaciones de distribución mayorista</p>
+    </div>
+    <div class="indicador-carga" [class.activo]="cargando">
+      <span>🔄 Actualizado en tiempo real</span>
+    </div>
+  </div>
+
+  @if (mensajeExito) {
+    <div class="alerta alerta-exito">
+      <strong>Éxito:</strong> {{ mensajeExito }}
+    </div>
+  }
+  @if (mensajeError) {
+    <div class="alerta alerta-error">
+      <strong>Error:</strong> {{ mensajeError }}
+    </div>
+  }
+
+  <div class="tablero-kanban">
+    
+    <div class="columna-kanban col-prospeccion">
+      <div class="cabecera-columna">
+        <div class="info-columna">
+          <span class="indicador-color color-prospeccion"></span>
+          <h3 class="nombre-columna">Prospección</h3>
+          <span class="contador-tarjetas">{{ proformasProspeccion.length }}</span>
         </div>
-        <span class="porcentaje-meta porcentaje-azul">{{ progresoIngresos }}%</span>
+        <span class="monto-columna">${{ sumarMonto(proformasProspeccion).toFixed(2) }}</span>
       </div>
-      <div class="barra-fondo">
-        <div class="barra-progreso progreso-azul" [style.width.%]="progresoIngresos"></div>
+
+      <div class="contenedor-tarjetas">
+        @for (item of proformasProspeccion; track item.id) {
+          <div class="tarjeta-proforma card-prospeccion">
+            <div class="tarjeta-cabecera">
+              <h4 class="tarjeta-cliente">{{ item.nombre_local }}</h4>
+              <span class="tarjeta-monto">${{ item.monto_total.toFixed(2) }}</span>
+            </div>
+            
+            <p class="tarjeta-vendedor">💼 {{ item.vendedor || 'Ejecutivo' }}</p>
+            
+            <div class="tarjeta-detalle-scroll">
+              <p class="tarjeta-detalle">{{ item.detalle_componentes }}</p>
+            </div>
+            
+            <div class="tarjeta-acciones">
+              <button 
+                class="btn-avanzar btn-full" 
+                (click)="actualizarEstado(item.id!, 'Negociacion')">
+                Iniciar Negociación ➡️
+              </button>
+            </div>
+          </div>
+        } @empty {
+          <div class="columna-vacia">
+            <p>Sin proformas en prospección</p>
+          </div>
+        }
       </div>
-      <p class="nota-meta">Faltan ${{ faltanteIngresos.toLocaleString('en-US') }} para alcanzar la meta.</p>
     </div>
 
-    <div class="tarjeta-meta">
-      <div class="cabecera-meta">
-        <div>
-          <p class="subtitulo-meta">Nuevos Distribuidores</p>
-          <h3 class="valor-meta">{{ distribuidores }} <span class="valor-total">/ {{ metaDistribuidores }} empresas</span></h3>
+    <div class="columna-kanban col-negociacion">
+      <div class="cabecera-columna">
+        <div class="info-columna">
+          <span class="indicador-color color-negociacion"></span>
+          <h3 class="nombre-columna">Negociación</h3>
+          <span class="contador-tarjetas">{{ proformasNegociacion.length }}</span>
         </div>
-        <span class="porcentaje-meta porcentaje-verde">{{ progresoDistribuidores }}%</span>
+        <span class="monto-columna">${{ sumarMonto(proformasNegociacion).toFixed(2) }}</span>
       </div>
-      <div class="barra-fondo">
-        <div class="barra-progreso progreso-verde" [style.width.%]="progresoDistribuidores"></div>
+
+      <div class="contenedor-tarjetas">
+        @for (item of proformasNegociacion; track item.id) {
+          <div class="tarjeta-proforma card-negociacion">
+            <div class="tarjeta-cabecera">
+              <h4 class="tarjeta-cliente">{{ item.nombre_local }}</h4>
+              <span class="tarjeta-monto">${{ item.monto_total.toFixed(2) }}</span>
+            </div>
+            
+            <p class="tarjeta-vendedor">💼 {{ item.vendedor || 'Ejecutivo' }}</p>
+            
+            <div class="tarjeta-detalle-scroll">
+              <p class="tarjeta-detalle">{{ item.detalle_componentes }}</p>
+            </div>
+            
+            <div class="tarjeta-acciones dos-botones">
+              <button 
+                class="btn-retroceder" 
+                (click)="actualizarEstado(item.id!, 'Prospeccion')">
+                ⬅️ Volver
+              </button>
+              <button 
+                class="btn-avanzar btn-exito" 
+                (click)="actualizarEstado(item.id!, 'Ganado')">
+                Ganado 🎉
+              </button>
+            </div>
+          </div>
+        } @empty {
+          <div class="columna-vacia">
+            <p>Sin negociaciones activas</p>
+          </div>
+        }
       </div>
-      <p class="nota-meta">{{ faltanteDistribuidores }} clientes pendientes para el bono trimestral.</p>
     </div>
+
+    <div class="columna-kanban col-ganado">
+      <div class="cabecera-columna">
+        <div class="info-columna">
+          <span class="indicador-color color-ganado"></span>
+          <h3 class="nombre-columna">Ganado</h3>
+          <span class="contador-tarjetas">{{ proformasGanado.length }}</span>
+        </div>
+        <span class="monto-columna font-exito">${{ sumarMonto(proformasGanado).toFixed(2) }}</span>
+      </div>
+
+      <div class="contenedor-tarjetas">
+        @for (item of proformasGanado; track item.id) {
+          <div class="tarjeta-proforma card-ganado">
+            <div class="tarjeta-cabecera">
+              <h4 class="tarjeta-cliente">{{ item.nombre_local }}</h4>
+              <span class="tarjeta-monto text-ganado">${{ item.monto_total.toFixed(2) }}</span>
+            </div>
+            
+            <p class="tarjeta-vendedor">💼 {{ item.vendedor || 'Ejecutivo' }}</p>
+            
+            <div class="tarjeta-detalle-scroll">
+              <p class="tarjeta-detalle">{{ item.detalle_componentes }}</p>
+            </div>
+            
+            <div class="tarjeta-acciones">
+              <button 
+                class="btn-retroceder btn-full" 
+                (click)="actualizarEstado(item.id!, 'Negociacion')">
+                ⬅️ Reabrir Negociación
+              </button>
+            </div>
+          </div>
+        } @empty {
+          <div class="columna-vacia">
+            <p>Ningún trato ganado aún</p>
+          </div>
+        }
+      </div>
+    </div>
+
   </div>
 </div>

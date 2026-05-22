@@ -1,43 +1,93 @@
 <div class="contenedor-vista">
-  <h2 class="titulo-vista">Ajustes del Sistema B2B</h2>
+  <div class="cabecera-vista">
+    <div>
+      <h2 class="titulo-vista">Gestión de Asesores y Personal</h2>
+      <p class="subtitulo-vista">Activa o suspende cuentas comerciales B2B resguardando el histórico de proformas</p>
+    </div>
+    <div class="indicador-carga" [class.activo]="cargando">
+      <span>🔄 Cargando datos...</span>
+    </div>
+  </div>
 
-  <div class="tarjeta-config">
-    <form class="formulario-config" (submit)="$event.preventDefault()">
-      
-      <div class="grupo-campo">
-        <label class="etiqueta-campo" for="empresa">Nombre de la Empresa Importadora</label>
-        <input class="input-campo" type="text" id="empresa" value="TechStore Importaciones">
+  @if (mensajeExito) {
+    <div class="alerta alerta-exito">
+      <strong>Éxito:</strong> {{ mensajeExito }}
+    </div>
+  }
+  @if (mensajeError) {
+    <div class="alerta alerta-error">
+      <strong>Error:</strong> {{ mensajeError }}
+    </div>
+  }
+
+  <div class="tarjeta-tabla-container">
+    <div class="tarjeta-tabla">
+      <div class="tabla-cabecera-seccion">
+        <h3 class="titulo-seccion">Directorio Interno de Asesores Comerciales</h3>
       </div>
-
-      <div class="grupo-campo">
-        <label class="etiqueta-campo" for="correo">Correo Electrónico de Soporte</label>
-        <input class="input-campo" type="email" id="correo" value="soporte@techstore.com">
+      <div class="tabla-responsive">
+        <table class="tabla-asesores">
+          <thead>
+            <tr>
+              <th>Cédula</th>
+              <th>Nombre Completo</th>
+              <th>Correo Electrónico</th>
+              <th>Celular</th>
+              <th>Rol del Sistema</th>
+              <th class="texto-centro">Estado de Cuenta</th>
+              <th class="texto-derecha">Acción de Control</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (user of asesores; track user.id) {
+              <tr class="asesor-row">
+                <td class="font-mono">{{ user.cedula }}</td>
+                <td class="font-bold">{{ user.nombres }} {{ user.apellidos }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.celular || 'N/A' }}</td>
+                <td>
+                  <span class="badge-rol badge-{{ user.rol_id === 1 ? 'admin' : 'asesor' }}">
+                    {{ user.rol_nombre }}
+                  </span>
+                </td>
+                <td class="texto-centro">
+                  @if (user.activo === 1) {
+                    <span class="badge-estado badge-activo">Activo</span>
+                  } @else {
+                    <span class="badge-estado badge-inactivo">Inactivo</span>
+                  }
+                </td>
+                <td class="texto-derecha">
+                  @if (user.id === usuarioLogueadoId) {
+                    <span class="badge-sesion-actual">Sesión Actual</span>
+                  } @else {
+                    <button 
+                      class="btn-control" 
+                      [class.btn-desactivar]="user.activo === 1"
+                      [class.btn-activar]="user.activo === 0"
+                      (click)="cambiarEstado(user.id, user.activo)">
+                      @if (user.activo === 1) {
+                        🚫 Suspender
+                      } @else {
+                        ✅ Activar
+                      }
+                    </button>
+                  }
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="7" class="tabla-vacia">
+                  <div class="vacio-mensaje">
+                    <span class="vacio-icono">👥</span>
+                    <p>No se encontraron asesores registrados en el sistema.</p>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
       </div>
-
-      <div class="separador-seccion">
-        <h3 class="titulo-seccion">Preferencias de Notificación</h3>
-        
-        <label class="opcion-checkbox">
-          <div class="checkbox-textos">
-            <span class="checkbox-titulo">Alertas por Correo</span>
-            <span class="checkbox-desc">Recibe notificaciones de proformas ganadas.</span>
-          </div>
-          <input type="checkbox" checked class="input-checkbox">
-        </label>
-
-        <label class="opcion-checkbox">
-          <div class="checkbox-textos">
-            <span class="checkbox-titulo">Reporte Semanal</span>
-            <span class="checkbox-desc">Recibe el resumen de ventas del equipo.</span>
-          </div>
-          <input type="checkbox" class="input-checkbox">
-        </label>
-      </div>
-
-      <div class="contenedor-boton">
-        <button type="submit" class="btn-primario">Guardar Ajustes</button>
-      </div>
-
-    </form>
+    </div>
   </div>
 </div>

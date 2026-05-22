@@ -1,7 +1,6 @@
 <div class="contenedor-principal">
   <div class="tarjeta-principal">
-    
-    
+
     <div class="encabezado-login">
       <div class="icono-contenedor">
         <svg class="icono" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -12,10 +11,8 @@
       <p class="subtitulo">Ingresa tus credenciales para acceder al panel de control</p>
     </div>
 
-    
     <form class="formulario-login" (ngSubmit)="onLogin()">
-      
-      
+
       <div class="grupo-formulario">
         <label for="email" class="etiqueta">Correo Electrónico</label>
         <div class="contenedor-input">
@@ -26,7 +23,6 @@
         </div>
       </div>
 
-      
       <div class="grupo-formulario">
         <div class="encabezado-password">
           <label for="password" class="etiqueta">Contraseña</label>
@@ -40,10 +36,8 @@
         </div>
       </div>
 
-      
       <p *ngIf="errorMessage" class="mensaje-error">{{ errorMessage }}</p>
 
-      
       <button type="submit" class="btn-primario" [disabled]="isLoading">
         <span *ngIf="!isLoading">Iniciar Sesión</span>
         <svg *ngIf="!isLoading" class="icono-btn" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>

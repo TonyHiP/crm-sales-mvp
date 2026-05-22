@@ -20,25 +20,24 @@ if ($db === null) {
 }
 
 try {
-    $query = "SELECT p.id, p.usuario_id, p.nombre_local, p.monto_total, p.detalle_componentes, p.estado, p.fecha_creacion,
-                     CONCAT(u.nombres, ' ', u.apellidos) AS vendedor
-              FROM proformas p
-              INNER JOIN usuarios u ON p.usuario_id = u.id
-              ORDER BY p.fecha_creacion DESC";
+    $query = "SELECT u.id, u.cedula, u.nombres, u.apellidos, u.email, u.celular, u.rol_id, u.activo, r.nombre AS rol_nombre 
+              FROM usuarios u
+              INNER JOIN roles r ON u.rol_id = r.id
+              ORDER BY u.id ASC";
     $stmt = $db->prepare($query);
     $stmt->execute();
-    $proformas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    foreach ($proformas as &$proforma) {
-        $proforma['id'] = (int)$proforma['id'];
-        $proforma['usuario_id'] = (int)$proforma['usuario_id'];
-        $proforma['monto_total'] = (float)$proforma['monto_total'];
+    foreach ($usuarios as &$user) {
+        $user['id'] = (int)$user['id'];
+        $user['rol_id'] = (int)$user['rol_id'];
+        $user['activo'] = (int)$user['activo'];
     }
 
     http_response_code(200);
     echo json_encode([
         "status" => "success",
-        "data" => $proformas
+        "data" => $usuarios
     ]);
 } catch (PDOException $e) {
     http_response_code(500);

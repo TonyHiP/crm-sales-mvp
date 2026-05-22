@@ -2,126 +2,257 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  max-width: 800px;
+  padding: 1.5rem;
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.cabecera-vista {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+  padding-bottom: 1rem;
 }
 
 .titulo-vista {
   margin: 0;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #1e293b;
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.025em;
 }
 
-.tarjeta-config {
-  background-color: #ffffff;
-  border-radius: 1rem;
-  padding: 2rem;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  border: 1px solid #e2e8f0;
-}
-
-.formulario-config {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.grupo-campo {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.etiqueta-campo {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #334155;
-}
-
-.input-campo {
-  padding: 0.75rem 1rem;
-  border: 1px solid #cbd5e1;
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
-  color: #1e293b;
-  background-color: #f8fafc;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  font-family: inherit;
-}
-
-.input-campo:focus {
-  outline: none;
-  border-color: #6366f1;
-  background-color: #ffffff;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
-}
-
-.separador-seccion {
-  border-top: 1px solid #e2e8f0;
-  padding-top: 1.5rem;
-  margin-top: 0.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.titulo-seccion {
-  margin: 0 0 0.5rem 0;
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: #1e293b;
-}
-
-.opcion-checkbox {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-}
-
-.checkbox-textos {
-  display: flex;
-  flex-direction: column;
-}
-
-.checkbox-titulo {
-  font-weight: 600;
-  color: #1e293b;
-  font-size: 0.875rem;
-}
-
-.checkbox-desc {
-  font-size: 0.75rem;
+.subtitulo-vista {
+  margin: 0.25rem 0 0 0;
+  font-size: 0.95rem;
   color: #64748b;
 }
 
-.input-checkbox {
-  width: 1.25rem;
-  height: 1.25rem;
-  accent-color: #6366f1;
-  cursor: pointer;
-}
-
-.contenedor-boton {
-  border-top: 1px solid #e2e8f0;
-  padding-top: 1.5rem;
-  margin-top: 0.5rem;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.btn-primario {
-  background-color: #6366f1;
-  color: #ffffff;
-  border: none;
-  border-radius: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  font-size: 0.875rem;
+.indicador-carga {
+  font-size: 0.85rem;
+  color: #94a3b8;
   font-weight: 600;
-  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.indicador-carga.activo {
+  opacity: 1;
+}
+
+.alerta {
+  padding: 1rem 1.25rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.alerta-exito {
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+}
+
+.alerta-error {
+  background-color: #fef2f2;
+  border: 1px solid #fee2e2;
+  color: #991b1b;
+}
+
+.tarjeta-tabla-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.tarjeta-tabla {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.tabla-cabecera-seccion {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.titulo-seccion {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.tabla-responsive {
+  overflow-x: auto;
+}
+
+.tabla-asesores {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.tabla-asesores th {
+  background-color: #f8fafc;
+  color: #64748b;
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.tabla-asesores td {
+  padding: 1.1rem 1.5rem;
+  border-bottom: 1px solid #f1f5f9;
+  color: #334155;
+  font-size: 0.9rem;
+}
+
+.asesor-row {
   transition: background-color 0.2s;
 }
 
-.btn-primario:hover {
-  background-color: #4f46e5;
+.asesor-row:hover {
+  background-color: #f8fafc;
+}
+
+.font-mono {
+  font-family: monospace;
+  font-weight: 600;
+  color: #475569;
+}
+
+.font-bold {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.texto-centro {
+  text-align: center;
+}
+
+.texto-derecha {
+  text-align: right;
+}
+
+.badge-rol {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.badge-rol-admin {
+  background-color: #fae8ff;
+  color: #a21caf;
+  border: 1px solid #f5d0fe;
+}
+
+.badge-rol-asesor {
+  background-color: #e0f2fe;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+}
+
+.badge-estado {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 2rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-align: center;
+  width: 70px;
+}
+
+.badge-activo {
+  background-color: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+}
+
+.badge-inactivo {
+  background-color: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.badge-sesion-actual {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #94a3b8;
+  background-color: #f1f5f9;
+  padding: 0.35rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px dashed #cbd5e1;
+}
+
+.btn-control {
+  border: none;
+  border-radius: 0.35rem;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.btn-desactivar {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.btn-desactivar:hover {
+  background-color: #fca5a5;
+  transform: translateY(-1px);
+}
+
+.btn-activar {
+  background-color: #dcfce3;
+  color: #166534;
+}
+
+.btn-activar:hover {
+  background-color: #bbf7d0;
+  transform: translateY(-1px);
+}
+
+.tabla-vacia {
+  text-align: center !important;
+  padding: 4rem 2rem !important;
+}
+
+.vacio-mensaje {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.vacio-icono {
+  font-size: 2.5rem;
+}
+
+.vacio-mensaje p {
+  margin: 0;
+  color: #94a3b8;
+  font-weight: 500;
 }

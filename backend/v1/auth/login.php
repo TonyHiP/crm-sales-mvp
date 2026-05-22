@@ -38,7 +38,7 @@ if (preg_match($sqlPattern, $email) || preg_match($sqlPattern, $password)) {
 }
 
 try {
-    $query = "SELECT id, nombres, apellidos, password, rol_id FROM usuarios WHERE email = :email";
+    $query = "SELECT id, nombres, apellidos, password, rol_id, activo FROM usuarios WHERE email = :email";
     $stmt = $db->prepare($query);
     $stmt->bindParam(':email', $email);
     $stmt->execute();
@@ -46,6 +46,15 @@ try {
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($user && password_verify($password, trim($user['password']))) {
+        if (isset($user['activo']) && (int)$user['activo'] === 0) {
+            http_response_code(401);
+            echo json_encode([
+                "status" => "error",
+                "message" => "Usuario desactivado por un administrado/a, por favor comuniquese con el area de sistemas"
+            ]);
+            exit;
+        }
+
         http_response_code(200);
         echo json_encode([
             "status" => "success",
